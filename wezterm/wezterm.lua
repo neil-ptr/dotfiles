@@ -1,0 +1,19 @@
+local wezterm = require("wezterm")
+
+local config = wezterm.config_builder()
+
+config.enable_tab_bar = false
+
+config.color_scheme = "nightfox"
+
+config.font = wezterm.font("Monaspace Neon")
+
+config.keys = {
+	{ mods = "OPT", key = "LeftArrow", action = wezterm.action.SendKey({ mods = "ALT", key = "b" }) },
+	{ mods = "OPT", key = "RightArrow", action = wezterm.action.SendKey({ mods = "ALT", key = "f" }) },
+	{ mods = "CMD", key = "LeftArrow", action = wezterm.action.SendKey({ mods = "CTRL", key = "a" }) },
+	{ mods = "CMD", key = "RightArrow", action = wezterm.action.SendKey({ mods = "CTRL", key = "e" }) },
+	{ mods = "CMD", key = "Backspace", action = wezterm.action.SendKey({ mods = "CTRL", key = "u" }) },
+}
+
+return config
