@@ -1,9 +1,22 @@
 #!/bin/bash
 
+if ! command -v brew &> /dev/null; then
+  echo "Installing Homebrew..."
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+if ! command -v zsh &> /dev/null; then
+  echo "Installing Zsh..."
+  brew install zsh
+fi
+
+# Define source and target paths
+DOTFILES_DIR=~/dotfiles
+
 # Create symlinks for configuration files
-ln -sf ~/dotfiles/zsh/.zshrc ~/.zshrc
-ln -sf ~/dotfiles/nvim ~/.config/nvim
-ln -sf ~/dotfiles/wezterm/wezterm.lua ~/.wezterm.lua
+ln -sf "$DOTFILES_DIR/zsh/.zshrc" ~/.zshrc
+ln -sf "$DOTFILES_DIR/nvim" ~/.config/nvim  # Link the entire nvim directory
+ln -sf "$DOTFILES_DIR/wezterm/wezterm.lua" ~/.wezterm.lua
 
 echo "Symbolic links created successfully!"
 

@@ -2,7 +2,7 @@
 My development setup with all my tools
 
 ## Prereqs
-* Wezterm
+* [Monafont](https://github.com/githubnext/monaspace) 
 
 
 ## Setup

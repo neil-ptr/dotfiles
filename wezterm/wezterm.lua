@@ -16,4 +16,6 @@ config.keys = {
 	{ mods = "CMD", key = "Backspace", action = wezterm.action.SendKey({ mods = "CTRL", key = "u" }) },
 }
 
+config.hyperlink_rules = wezterm.default_hyperlink_rules()
+
 return config
