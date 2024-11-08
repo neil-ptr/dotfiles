@@ -80,7 +80,8 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-syntax-highlighting web-search)
+source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+plugins=(git zsh-syntax-highlighting web-search, zsh-autocomplete)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -138,3 +139,4 @@ alias python=/usr/bin/python3
 
 [[ "$TERM_PROGRAM" == "CodeEditApp_Terminal" ]] && . "/Applications/CodeEdit.app/Contents/Resources/codeedit_shell_integration.zsh"
 export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

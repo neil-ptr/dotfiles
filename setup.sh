@@ -7,7 +7,7 @@ fi
 
 if ! command -v zsh &> /dev/null; then
   echo "Installing Zsh..."
-  brew install zsh
+  sudo brew install zsh
 fi
 
 
@@ -71,7 +71,37 @@ if ! grep -q "source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-h
   echo "source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> $HOME/.zshrc
 fi
 
-############
+if ! brew list zsh-autocomplete &>/dev/null; then
+  echo "Installing zsh-autocomplete..."
+  brew install zsh-autocomplete
+fi
+
+# ripgrep
+if ! command -v rg &> /dev/null; then
+  echo "ripgrep could not be found. Installing..."
+  brew install ripgrep
+fi
+
+# Install btop if not already installed
+if ! command -v btop &> /dev/null; then
+  echo "btop could not be found. Installing..."
+  brew install btop
+fi
+
+if ! brew list zsh-autosuggestions &>/dev/null; then
+  echo "Installing zsh-autosuggestions..."
+  brew install zsh-autosuggestions
+fi
+
+# Tap and install Hurl
+if ! brew tap | grep -q "neil-and-void/homebrew-hurl"; then
+  echo "Tapping neil-and-void/homebrew-hurl..."
+  brew tap neil-and-void/homebrew-hurl
+fi
+if ! brew list hurl &>/dev/null; then
+  echo "Installing hurl..."
+  brew install neil-and-void/homebrew-hurl/hurl
+fi
 
 ###### neovim dependencies ######
 
