@@ -81,7 +81,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-plugins=(git zsh-syntax-highlighting web-search, zsh-autocomplete)
+plugins=(git zsh-syntax-highlighting web-search)
 
 source $ZSH/oh-my-zsh.sh
 
