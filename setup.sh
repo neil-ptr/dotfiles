@@ -15,6 +15,7 @@ DOTFILES_DIR=~/dotfiles
 ln -sf "$DOTFILES_DIR/zsh/.zshrc" ~/.zshrc
 ln -sf "$DOTFILES_DIR/nvim" ~/.config/nvim  
 ln -sf "$DOTFILES_DIR/wezterm/wezterm.lua" ~/.wezterm.lua
+ln -sf "$DOTFILES_DIR/tmux/tmux.conf" ~/.tmux.conf
 echo "Symbolic links created successfully!"
 
 # Install required dependencies
@@ -43,6 +44,12 @@ fi
 if ! command -v go &> /dev/null; then
   echo "Go could not be found. Installing..."
   brew install go
+fi
+
+###### tmux dependencies ######
+if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
+  echo "Installing Tmux Plugin Manager (TPM)..."
+  git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 fi
 
 ###### zsh dependencies ######
