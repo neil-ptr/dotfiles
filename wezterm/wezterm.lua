@@ -6,7 +6,7 @@ config.enable_tab_bar = false
 
 config.color_scheme = "nightfox"
 
-config.font = wezterm.font("Monaspace Neon")
+config.font = wezterm.font("Monaspace Neon", { weight = "Medium" })
 
 config.keys = {
 	{ mods = "OPT", key = "LeftArrow", action = wezterm.action.SendKey({ mods = "ALT", key = "b" }) },
