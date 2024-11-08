@@ -7,9 +7,8 @@ fi
 
 if ! command -v zsh &> /dev/null; then
   echo "Installing Zsh..."
-  sudo brew install zsh
+  brew install zsh
 fi
-
 
 DOTFILES_DIR=~/dotfiles
 ln -sf "$DOTFILES_DIR/zsh/.zshrc" ~/.zshrc
@@ -31,7 +30,7 @@ fi
 # Node.js 
 if ! command -v node &> /dev/null; then
   echo "Node.js could not be found. Installing..."
-  brew install node
+   brew install node
 fi
 
 # Python
@@ -67,10 +66,16 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
 fi
 
 # syntax highlighting zsh
+if ! brew list zsh-syntax-highlighting &>/dev/null; then
+  echo "Installing zsh-syntax-highlighting..."
+  brew install zsh-syntax-highlighting
+fi
+
 if ! grep -q "source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" $HOME/.zshrc; then
   echo "source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> $HOME/.zshrc
 fi
 
+# Install zsh-autocomplete
 if ! brew list zsh-autocomplete &>/dev/null; then
   echo "Installing zsh-autocomplete..."
   brew install zsh-autocomplete
@@ -88,6 +93,7 @@ if ! command -v btop &> /dev/null; then
   brew install btop
 fi
 
+# Install zsh-autosuggestions
 if ! brew list zsh-autosuggestions &>/dev/null; then
   echo "Installing zsh-autosuggestions..."
   brew install zsh-autosuggestions
@@ -108,8 +114,7 @@ fi
 # Neovim
 if ! command -v nvim &> /dev/null; then
   echo "Installing Neovim..."
-  # Adjust installation method based on your OS
-  brew install neovim # macOS (Homebrew)
+  brew install neovim
 fi
 
 ############
@@ -119,4 +124,3 @@ echo "Sourcing ~/.zshrc to apply changes..."
 source ~/.zshrc
 
 echo "Setup complete! All configurations are in place."
-
