@@ -12,6 +12,6 @@ My development setup with all my tools
 
 1. clone in home dir
 2. cd into dotfiles
-3. run `./setup.sh`
+3. run `sudo ./setup.sh`
 4. Reload terminal
-5. Go into tmux and ctrl + leader + I to apply tmux changes
+5. Enter tmux with `tmux` and run `ctrl + leader + I` to install tmux changes

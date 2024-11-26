@@ -258,6 +258,7 @@ require('lazy').setup({
           return vim.fn.executable 'make' == 1
         end,
       },
+      { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
       {
         'nvim-telescope/telescope-live-grep-args.nvim',
         -- This will not install any breaking changes.
@@ -656,6 +657,14 @@ local on_attach = function(_, bufnr)
   nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
   nmap('<leader>ss', require('telescope.builtin').lsp_document_symbols, 'Document [S]ymbol[s]')
   nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+
+  -- vertical split and gd
+  nmap('<leader>vd', function()
+    vim.cmd 'vs' -- Perform vertical split
+    vim.cmd 'wincmd l' -- Move to the right pane
+    vim.lsp.buf.definition() -- Trigger go-to definition
+  end, '[V]ertical split and Goto [D]efinition')
+
   -- purely for c/c++/objc/objcpp
   nmap('gs', '<cmd>ClangdSwitchSourceHeader<CR>', '[G]oto [S]ource or header')
 
