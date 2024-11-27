@@ -665,6 +665,13 @@ local on_attach = function(_, bufnr)
     vim.lsp.buf.definition() -- Trigger go-to definition
   end, '[V]ertical split and Goto [D]efinition')
 
+  -- Vertical split and go to references
+  nmap('<leader>vr', function()
+    vim.cmd 'vs' -- Perform vertical split
+    vim.cmd 'wincmd l' -- Move to the right pane
+    vim.lsp.buf.references() -- Trigger go-to references
+  end, '[V]ertical split and Goto [R]eferences')
+
   -- purely for c/c++/objc/objcpp
   nmap('gs', '<cmd>ClangdSwitchSourceHeader<CR>', '[G]oto [S]ource or header')
 
