@@ -115,7 +115,7 @@ alias g="git"
 alias gw="git worktree"
 alias vim="nvim"
 alias tmuxt="tmux attach -t"
-
+alias air='$(go env GOPATH)/bin/air'
 
 export VOLTA_HOME="$HOME/.volta"
 export LVIM_PATH="$HOME/.local/bin"
