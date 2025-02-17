@@ -553,7 +553,7 @@ end, { desc = 'Refactor extract block to file' })
 ---@diagnostic disable-next-line: missing-fields
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
-  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'astro', 'css', 'jsdoc' },
+  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'astro', 'css', 'jsdoc', 'wgsl' },
 
   -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
   auto_install = false,
@@ -751,6 +751,7 @@ local servers = {
       telemetry = { enable = false },
     },
   },
+  wgsl_analyzer = {},
 }
 
 -- Setup neovim lua configuration
@@ -852,6 +853,8 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 -- comment.nvim
 local ft = require 'Comment.ft'
 ft.set('objcpp', { '// %s', '/* %s */' })
+ft.set('wgsl', { '// %s' })
+ft.set('obj', { '# %s' })
 
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`
