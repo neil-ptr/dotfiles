@@ -131,6 +131,8 @@ require('lazy').setup({
     },
   },
 
+  { 'nvim-ts-autotag', opts = {} },
+
   -- Useful plugin to show you pending keybinds.
   { 'folke/which-key.nvim', opts = {} },
 
@@ -548,6 +550,13 @@ vim.keymap.set('n', '<leader>rfB', function()
 end, { desc = 'Refactor extract block to file' })
 -- Extract block supports only normal mode
 
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'man',
+  callback = function()
+    vim.cmd 'wincmd L'
+  end,
+})
+
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
 ---@diagnostic disable-next-line: missing-fields
@@ -651,9 +660,12 @@ local on_attach = function(_, bufnr)
   nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
   nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
-  nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+  nmap('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
   nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
   nmap('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
+  nmap('gM', function()
+    vim.cmd('vert Man ' .. vim.fn.expand '<cword>')
+  end, '[G]oto [M]an page')
   nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
   nmap('<leader>ss', require('telescope.builtin').lsp_document_symbols, 'Document [S]ymbol[s]')
   nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
@@ -662,14 +674,14 @@ local on_attach = function(_, bufnr)
   nmap('<leader>vd', function()
     vim.cmd 'vs' -- Perform vertical split
     vim.cmd 'wincmd l' -- Move to the right pane
-    vim.lsp.buf.definition() -- Trigger go-to definition
+    require('telescope.builtin').lsp_definitions() -- Trigger go-to definition
   end, '[V]ertical split and Goto [D]efinition')
 
   -- Vertical split and go to references
   nmap('<leader>vr', function()
     vim.cmd 'vs' -- Perform vertical split
     vim.cmd 'wincmd l' -- Move to the right pane
-    vim.lsp.buf.references() -- Trigger go-to references
+    require('telescope.builtin').lsp_references() -- Trigger go-to references
   end, '[V]ertical split and Goto [R]eferences')
 
   -- purely for c/c++/objc/objcpp
@@ -794,7 +806,7 @@ require('conform').setup {
     cpp = { 'clang_format' },
     objcpp = { 'clang_format' },
     objc = { 'clang_format' },
-    html = { 'superhtml' },
+    html = { 'html_beautify' },
   },
   format_on_save = {
     timeout_ms = 2000,
