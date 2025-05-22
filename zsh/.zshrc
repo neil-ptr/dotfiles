@@ -124,6 +124,7 @@ export PATH="$DPRINT_INSTALL/bin:$PATH"
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 export PATH="/opt/homebrew/opt/python@2/libexec/bin:$PATH"
 export PATH="$PATH:/Applications/WezTerm.app/Contents/MacOS"
+export PATH="$PATH:$HOME/.local/bin/poetry"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -135,7 +136,7 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
 
 #TODO: REMOVE THIS ON NEW INSATALLS
-alias python=/usr/bin/python3
+# alias python=/usr/bin/python3
 
 [[ "$TERM_PROGRAM" == "CodeEditApp_Terminal" ]] && . "/Applications/CodeEdit.app/Contents/Resources/codeedit_shell_integration.zsh"
 export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
