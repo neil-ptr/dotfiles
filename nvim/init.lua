@@ -685,7 +685,7 @@ local on_attach = function(_, bufnr)
   end, '[V]ertical split and Goto [R]eferences')
 
   -- purely for c/c++/objc/objcpp
-  nmap('gs', '<cmd>ClangdSwitchSourceHeader<CR>', '[G]oto [S]ource or header')
+  nmap('gS', '<cmd>ClangdSwitchSourceHeader<CR>', '[G]oto [S]ource or header')
 
   -- See `:help K` for why this keymap
   nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
