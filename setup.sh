@@ -1,48 +1,58 @@
-#!/bin/zsh
+#!/bin/bash
 
-if ! command -v brew &> /dev/null; then
-  echo "Installing Homebrew..."
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+set -e
+
+# Detect OS
+OS="$(uname -s)"
+
+# Package manager and install command
+if [[ "$OS" == "Darwin" ]]; then
+  PKG_MANAGER="brew"
+  INSTALL_CMD="brew install"
+elif [[ -f /etc/debian_version ]]; then
+  PKG_MANAGER="apt"
+  INSTALL_CMD="sudo apt-get install -y"
+  sudo apt-get update
+else
+  echo "Unsupported OS: $OS"
+  exit 1
 fi
 
+echo "Using package manager: $PKG_MANAGER"
+
+# Install Zsh
 if ! command -v zsh &> /dev/null; then
   echo "Installing Zsh..."
-  brew install zsh
+  $INSTALL_CMD zsh
 fi
 
 DOTFILES_DIR=~/dotfiles
+mkdir -p ~/.config
+
 ln -sf "$DOTFILES_DIR/zsh/.zshrc" ~/.zshrc
 ln -sf "$DOTFILES_DIR/nvim" ~/.config/nvim  
 ln -sf "$DOTFILES_DIR/wezterm/wezterm.lua" ~/.wezterm.lua
 ln -sf "$DOTFILES_DIR/tmux/tmux.conf" ~/.tmux.conf
 echo "Symbolic links created successfully!"
 
-# Install required dependencies
-echo "Installing required dependencies..."
-brew install git curl cmake
+# Install common tools
+for pkg in git curl cmake lua node python3 golang ripgrep tmux; do
+  if ! command -v $pkg &> /dev/null; then
+    echo "Installing $pkg..."
+    $INSTALL_CMD $pkg
+  fi
+done
 
-# Lua
-if ! command -v lua &> /dev/null; then
-    echo "Lua could not be found. Installing..."
-    brew install lua
-fi
-
-# Node.js 
-if ! command -v node &> /dev/null; then
-  echo "Node.js could not be found. Installing..."
-   brew install node
-fi
-
-# Python
-if ! command -v python3 &> /dev/null; then
-  echo "Python could not be found. Installing..."
-  brew install python
-fi
-
-# Go
-if ! command -v go &> /dev/null; then
-  echo "Go could not be found. Installing..."
-  brew install go
+# Install btop (fallback to top if unavailable on apt)
+if ! command -v btop &> /dev/null; then
+  echo "Installing btop..."
+  if [[ "$PKG_MANAGER" == "apt" ]]; then
+    sudo add-apt-repository -y ppa:arctic-fox/btop
+    sudo apt update
+    sudo apt install -y btop
+  else
+    brew install btop
+  fi
 fi
 
 ###### tmux dependencies ######
@@ -53,74 +63,41 @@ fi
 
 ###### zsh dependencies ######
 
-# Powerlevel10k 
+# Oh My Zsh
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+  echo "Installing Oh My Zsh..."
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+fi
+
+# Powerlevel10k
 if [ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k" ]; then
   echo "Installing Powerlevel10k theme..."
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
 fi
 
-# Oh My Zsh 
-if [ ! -d "$HOME/.oh-my-zsh" ]; then
-  echo "Installing Oh My Zsh..."
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-fi
-
-# syntax highlighting zsh
-if ! brew list zsh-syntax-highlighting &>/dev/null; then
+# zsh-syntax-highlighting
+if [ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting" ]; then
   echo "Installing zsh-syntax-highlighting..."
-  brew install zsh-syntax-highlighting
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
 fi
 
-if ! grep -q "source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" $HOME/.zshrc; then
-  echo "source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> $HOME/.zshrc
-fi
-
-# Install zsh-autocomplete
-if ! brew list zsh-autocomplete &>/dev/null; then
-  echo "Installing zsh-autocomplete..."
-  brew install zsh-autocomplete
-fi
-
-# ripgrep
-if ! command -v rg &> /dev/null; then
-  echo "ripgrep could not be found. Installing..."
-  brew install ripgrep
-fi
-
-# Install btop if not already installed
-if ! command -v btop &> /dev/null; then
-  echo "btop could not be found. Installing..."
-  brew install btop
-fi
-
-# Install zsh-autosuggestions
-if ! brew list zsh-autosuggestions &>/dev/null; then
+# zsh-autosuggestions
+if [ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions" ]; then
   echo "Installing zsh-autosuggestions..."
-  brew install zsh-autosuggestions
+  git clone https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
 fi
 
-# Tap and install Hurl
-if ! brew tap | grep -q "neil-and-void/homebrew-hurl"; then
-  echo "Tapping neil-and-void/homebrew-hurl..."
-  brew tap neil-and-void/homebrew-hurl
-fi
-if ! brew list hurl &>/dev/null; then
-  echo "Installing hurl..."
-  brew install neil-and-void/homebrew-hurl/hurl
+# zsh-autocomplete (optional)
+if [ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autocomplete" ]; then
+  echo "Installing zsh-autocomplete..."
+  git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autocomplete"
 fi
 
-###### neovim dependencies ######
-
-# Neovim
+###### neovim ######
 if ! command -v nvim &> /dev/null; then
   echo "Installing Neovim..."
-  brew install neovim
+  $INSTALL_CMD neovim
 fi
 
-############
-
-# Apply Zsh configuration by sourcing .zshrc
-echo "Sourcing ~/.zshrc to apply changes..."
-source ~/.zshrc
-
-echo "Setup complete! All configurations are in place."
+# Apply Zsh configuration
+echo "Setup complete. Run 'exec zsh' or restart your shell to use the new config."
