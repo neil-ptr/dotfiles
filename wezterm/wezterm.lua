@@ -4,7 +4,11 @@ local config = wezterm.config_builder()
 
 config.enable_tab_bar = false
 
-config.color_scheme = "nightfox"
+-- config.color_scheme = "nightfox"
+config.colors = {
+	background = "#1f1f24",
+	cursor_bg = "#3088f1",
+}
 
 config.font = wezterm.font("Monaspace Neon", { weight = "Medium" })
 

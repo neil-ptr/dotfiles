@@ -113,31 +113,37 @@ source $ZSH/oh-my-zsh.sh
 alias cl="clear"
 alias g="git"
 alias gw="git worktree"
-alias vim="nvim"
+alias vim='nvim --listen /tmp/nvim-server.pipe'
 alias tmuxt="tmux attach -t"
 alias air='$(go env GOPATH)/bin/air'
 
+# Volta (place early)
 export VOLTA_HOME="$HOME/.volta"
-export LVIM_PATH="$HOME/.local/bin"
-export PATH="$VOLTA_HOME/bin:$LVIM_PATH:$PATH"
+export PATH="$VOLTA_HOME/bin:$PATH"
+
+hash -r
+
+# Other tools
+export DPRINT_INSTALL="$HOME/.dprint"
 export PATH="$DPRINT_INSTALL/bin:$PATH"
-export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
+
 export PATH="/opt/homebrew/opt/python@2/libexec/bin:$PATH"
-export PATH="$PATH:/Applications/WezTerm.app/Contents/MacOS"
-export PATH="$PATH:$HOME/.local/bin/poetry"
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
+export PATH="/Applications/WezTerm.app/Contents/MacOS:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/bin/poetry:$PATH"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# pnpm
+export PNPM_HOME="$HOME/Library/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+
+# UI & Themes
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
-
-#TODO: REMOVE THIS ON NEW INSATALLS
-# alias python=/usr/bin/python3
-
-[[ "$TERM_PROGRAM" == "CodeEditApp_Terminal" ]] && . "/Applications/CodeEdit.app/Contents/Resources/codeedit_shell_integration.zsh"
-export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+[[ "$TERM_PROGRAM" == "CodeEditApp_Terminal" ]] && \
+  source "/Applications/CodeEdit.app/Contents/Resources/codeedit_shell_integration.zsh"

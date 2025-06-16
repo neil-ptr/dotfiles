@@ -209,6 +209,16 @@ require('lazy').setup({
   },
   { 'EdenEast/nightfox.nvim' },
   {
+    dir = vim.fn.stdpath 'config' .. '/lua/custom/plugins/xcodedark',
+    name = 'xcodedark',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require('custom.plugins.xcodedark.colors').init()
+    end,
+  },
+  { 'arzg/vim-colors-xcode' },
+  {
     -- Add indentation guides even on blank lines
     'lukas-reineke/indent-blankline.nvim',
     -- Enable `lukas-reineke/indent-blankline.nvim`
@@ -372,7 +382,8 @@ vim.o.termguicolors = true
 vim.o.hidden = false
 
 -- vim.o.background = "dark" -- set this to dark or light
-vim.cmd 'colorscheme nightfox'
+-- vim.cmd 'colorscheme xcodedarkhc'
+-- vim.cmd 'colorscheme nightfox'
 -- vim.cmd 'colorscheme kanagawa'
 
 -- neotree colors
