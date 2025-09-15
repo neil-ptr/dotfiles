@@ -115,6 +115,100 @@ require('lazy').setup({
       }
     end,
   },
+  { 'catppuccin/nvim', name = 'catppuccin', priority = 1000 },
+  {
+    'yetone/avante.nvim',
+    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+    -- ⚠️ must add this setting! ! !
+    build = vim.fn.has 'win32' ~= 0 and 'powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false' or 'make',
+    event = 'VeryLazy',
+    version = 'false', -- Never set this value to "*"! Never!
+    -- @module 'avante'
+    -- @type avante.Config
+    opts = {
+      -- add any opts here
+      -- this file can contain specific instructions for your project
+      instructions_file = 'avante.md',
+      -- for example
+      provider = 'gemini',
+      model = 'gemini-2.5-flash',
+    },
+    -- config = function()
+    --   require('neo-tree').setup {
+    --     filesystem = {
+    --       commands = {
+    --         avante_add_files = function(state)
+    --           local node = state.tree:get_node()
+    --           local filepath = node:get_id()
+    --           local relative_path = require('avante.utils').relative_path(filepath)
+    --
+    --           local sidebar = require('avante').get()
+    --
+    --           local open = sidebar:is_open()
+    --           -- ensure avante sidebar is open
+    --           if not open then
+    --             require('avante.api').ask()
+    --             sidebar = require('avante').get()
+    --           end
+    --
+    --           sidebar.file_selector:add_selected_file(relative_path)
+    --
+    --           -- remove neo tree buffer
+    --           if not open then
+    --             sidebar.file_selector:remove_selected_file 'neo-tree filesystem [1]'
+    --           end
+    --         end,
+    --       },
+    --       window = {
+    --         mappings = {
+    --           ['oa'] = 'avante_add_files',
+    --         },
+    --       },
+    --     },
+    --   }
+    -- end,
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'MunifTanjim/nui.nvim',
+      --- The below dependencies are optional,
+      'echasnovski/mini.pick', -- for file_selector provider mini.pick
+      'nvim-telescope/telescope.nvim', -- for file_selector provider telescope
+      'hrsh7th/nvim-cmp', -- autocompletion for avante commands and mentions
+      'ibhagwan/fzf-lua', -- for file_selector provider fzf
+      'stevearc/dressing.nvim', -- for input provider dressing
+      'folke/snacks.nvim', -- for input provider snacks
+      'nvim-tree/nvim-web-devicons', -- or echasnovski/mini.icons
+      'zbirenbaum/copilot.lua', -- for providers='copilot'
+      {
+        -- support for image pasting
+        'HakonHarnes/img-clip.nvim',
+        event = 'VeryLazy',
+        opts = {
+          -- recommended settings
+          default = {
+            embed_image_as_base64 = false,
+            prompt_for_file_name = false,
+            drag_and_drop = {
+              insert_mode = true,
+            },
+            -- required for Windows users
+            use_absolute_path = true,
+          },
+        },
+      },
+      {
+        -- Make sure to set this up properly if you have lazy=true
+        'MeanderingProgrammer/render-markdown.nvim',
+        opts = {
+          file_types = { 'markdown', 'Avante' },
+        },
+        ft = { 'markdown', 'Avante' },
+      },
+    },
+  },
+  {
+    'mfussenegger/nvim-dap',
+  },
   {
     -- Autocompletion
     'hrsh7th/nvim-cmp',
@@ -391,7 +485,7 @@ vim.o.hidden = false
 -- vim.cmd 'hi NeoTreeNormalNC guibg=#1f1d2e'
 
 -- tilde empty line removal
-vim.opt.fillchars = { eob = ' ' }
+vim.opt.fillchars:append { eob = ' ', vert = '▕' }
 
 -- [[ Basic Keymaps ]]
 
@@ -441,7 +535,7 @@ vim.api.nvim_set_keymap('n', '<leader>bd', ':bd<CR>', { noremap = true, silent =
 -- harpoon config
 local mark = require 'harpoon.mark'
 local ui = require 'harpoon.ui'
-vim.keymap.set('n', '<leader>a', mark.add_file, { desc = '[a]dd file to marks' })
+vim.keymap.set('n', '<leader>A', mark.add_file, { desc = '[a]dd file to marks' })
 vim.keymap.set('n', '<leader>e', ui.toggle_quick_menu, { desc = 'Toggle harpoon' })
 vim.keymap.set('n', '<C-m>', function()
   ui.nav_file(1)
@@ -731,10 +825,10 @@ local border = {
 }
 
 -- LSP settings (for overriding per client)
-local handlers = {
-  ['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = border }),
-  ['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
-}
+-- local handlers = {
+--   ['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = border }),
+--   ['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
+-- }
 
 -- Do not forget to use the on_attach function
 
@@ -804,6 +898,7 @@ mason_lspconfig.setup_handlers {
 
 require('conform').setup {
   formatters_by_ft = {
+    astro = { 'prettierd', 'eslint_d' },
     lua = { 'stylua' },
     python = { 'black', 'isort' },
     json = { 'fixjson' },

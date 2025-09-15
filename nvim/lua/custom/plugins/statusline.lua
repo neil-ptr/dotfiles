@@ -4,8 +4,8 @@ local colors = xcodedark.colors
 local theme = {
   normal = {
     a = { fg = colors.base6, bg = colors.base3 },
-    b = { fg = colors.base6, bg = colors.base1 },
-    c = { fg = colors.base6 },
+    b = { fg = colors.base6, bg = colors.surface1 },
+    c = { fg = colors.base6, bg = colors.surface1 },
   },
 
   insert = { a = { fg = colors.base6, bg = colors.deep_purple } },

@@ -145,5 +145,8 @@ export PATH="$PNPM_HOME:$PATH"
 source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+# keys
+export AVANTE_GEMINI_API_KEY="$(security find-generic-password -a "$USER" -s gemini_api_key -w 2>/dev/null || true)"
+
 [[ "$TERM_PROGRAM" == "CodeEditApp_Terminal" ]] && \
   source "/Applications/CodeEdit.app/Contents/Resources/codeedit_shell_integration.zsh"

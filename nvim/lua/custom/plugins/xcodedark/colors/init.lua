@@ -4,76 +4,84 @@ local M = {}
 
 -- Base colors
 -- normal dark
--- local colors = {
---   base0 = '#292a30',
---   base1 = '#2f3037',
---   base2 = '#393b44',
---   base3 = '#414453',
---   base4 = '#53606e',
---   base5 = '#7f8c98',
---   base6 = '#a3b1bf',
---   base7 = '#dfdfe0',
---   deep_blue0 = '#0f5bca',
---   deep_blue1 = '#4484d1',
---   deep_yellow = '#fef937',
---   green_wash = '#243330',
---   orange_wash = '#382e27',
---   red_wash = '#3b2d2b',
---   blue = '#4eb0cc',
---   light_blue = '#6bdfff',
---   orange = '#ffa14f',
---   pink = '#ff7ab2',
---   red = '#ff8170',
---   yellow = '#d9c97c',
---   purple = '#b281eb',
---   light_purple = '#dabaff',
---   teal = '#78c2b3',
---   light_teal = '#acf2e4',
---   green = '#84b360',
---   light_green = '#b0e687',
--- -- custom
--- error_red = '#f05154',
--- modified = '#ddbd8a',
--- deep_purple = '#58366b',
--- deep_teal = '#3c5a63',
--- deep_red = '#d7827e',
--- }
-
--- hc dark
 local colors = {
-  base0 = '#1f1f24',
-  base1 = '#26262b',
-  base2 = '#34353b',
-  base3 = '#43454b',
-  base4 = '#52555c',
-  base5 = '#838991',
-  base6 = '#aeb7c0',
-  base7 = '#ffffff',
+  base0 = '#292a30',
+  base1 = '#2f3037',
+  base2 = '#393b44',
+  base3 = '#414453',
+  base4 = '#53606e',
+  base5 = '#7f8c98',
+  base6 = '#a3b1bf',
+  base7 = '#dfdfe0',
   deep_blue0 = '#0f5bca',
   deep_blue1 = '#4484d1',
   deep_yellow = '#fef937',
-  green_wash = '#1e2a28',
-  orange_wash = '#2e2622',
-  red_wash = '#2f2625',
-  blue = '#4ec4e6',
+  green_wash = '#243330',
+  orange_wash = '#382e27',
+  red_wash = '#3b2d2b',
+  blue = '#4eb0cc',
   light_blue = '#6bdfff',
   orange = '#ffa14f',
-  pink = '#ff85b8',
-  red = '#ff8a7a',
-  yellow = '#d9c668',
-  purple = '#cda1ff',
-  light_purple = '#e5cfff',
-  teal = '#83c9bc',
-  light_teal = '#b1faeb',
-  green = '#8dbf67',
-  light_green = '#b8f08d',
+  pink = '#ff7ab2',
+  red = '#ff8170',
+  yellow = '#e8cc46',
+  purple = '#b281eb',
+  light_purple = '#dabaff',
+  teal = '#78c2b3',
+  light_teal = '#acf2e4',
+  green = '#84b360',
+  light_green = '#b0e687',
   -- custom
   error_red = '#f05154',
   modified = '#ddbd8a',
   deep_purple = '#58366b',
   deep_teal = '#3c5a63',
   deep_red = '#d7827e',
+  border = '#050506',
+  surface = '#2C2D2D',
+  surface1 = '#1f1f1f',
 }
+
+-- hc dark
+-- local colors = {
+--   -- base0 = '#1f1f24',
+--   surface = '#2C2D2D',
+--   surface1 = '#1f1f1f',
+--
+--   base0 = '#26262b',
+--   base1 = '#26262b',
+--   base2 = '#34353b',
+--   base3 = '#43454b',
+--   base4 = '#52555c',
+--   base5 = '#838991',
+--   base6 = '#aeb7c0',
+--   base7 = '#ffffff',
+--   deep_blue0 = '#0f5bca',
+--   deep_blue1 = '#4484d1',
+--   deep_yellow = '#fef937',
+--   green_wash = '#1e2a28',
+--   orange_wash = '#2e2622',
+--   red_wash = '#2f2625',
+--   blue = '#4ec4e6',
+--   light_blue = '#6bdfff',
+--   orange = '#ffa14f',
+--   pink = '#ff85b8',
+--   red = '#ff8a7a',
+--   yellow = '#d9c668',
+--   purple = '#cda1ff',
+--   light_purple = '#e5cfff',
+--   teal = '#83c9bc',
+--   light_teal = '#b1faeb',
+--   green = '#8dbf67',
+--   light_green = '#b8f08d',
+--   -- custom
+--   error_red = '#f05154',
+--   modified = '#ddbd8a',
+--   deep_purple = '#58366b',
+--   deep_teal = '#3c5a63',
+--   deep_red = '#d7827e',
+--   border = '#050506',
+-- }
 
 M.colors = colors
 
@@ -139,7 +147,7 @@ function M.init()
   set('WarningMsg', { fg = colors.orange, bg = 'NONE' })
   set('ColorColumn', { fg = 'NONE', bg = '#26262b' })
   set('CursorColumn', { fg = 'NONE', bg = '#26262b' })
-  set('CursorLine', { fg = 'NONE', bg = '#26262b' })
+  set('CursorLine', { fg = 'NONE', bg = colors.base1 })
   set('QuickFixLine', { fg = '#ffffff', bg = colors.deep_blue0 })
   set('StatusLine', { fg = '#ffffff', bg = '#43454b' })
   set('StatusLineNC', { fg = '#838991', bg = colors.base2 })
@@ -147,9 +155,10 @@ function M.init()
   set('WinSeparator', { fg = colors.base2, bg = colors.base0 })
   set('WildMenu', { fg = '#ffffff', bg = colors.deep_blue0 })
   set('IncSearch', { fg = colors.base0, bg = colors.deep_yellow })
+  set('CurSearch', { link = 'IncSearch' })
   set('Search', { fg = '#ffffff', bg = '#43454b' })
   set('Visual', { fg = 'NONE', bg = '#43454b' })
-  set('DiffAdd', { fg = '#b1faeb', bg = '#1e2a28' })
+  set('DiffAdd', { fg = colors.deep_blue1, bg = 'NONE' })
   set('DiffChange', { fg = colors.orange, bg = 'NONE' })
   set('DiffDelete', { fg = '#ff8a7a', bg = '#2f2625' })
   set('DiffText', { fg = colors.orange, bg = '#2e2622' })
@@ -344,7 +353,6 @@ function M.init()
   set('tstype', { link = 'Type' })
   set('tstypebuiltin', { link = 'Type' })
   set('tsemphasis', { link = 'Underlined' })
-  set('telescopematching', { fg = '#2d8504', bg = 'NONE', bold = true })
   set('rsForeignConst', { link = 'LibraryIdent' })
   set('rsForeignFunc', { link = 'LibraryFunc' })
   set('rsForeignType', { link = 'LibraryType' })
@@ -468,18 +476,29 @@ function M.init()
   set('Delimiter', { fg = '#ffffff', bg = 'NONE' })
   set('Operator', { fg = '#ffffff', bg = 'NONE' })
 
+  -- telescope
+  set('TelescopeNormal', { bg = colors.base1, fg = '#8D8E8D' })
+  set('TelescopePromptNormal', { bg = colors.base1, fg = '#ffffff' })
+  set('TelescopeBorder', { bg = colors.base1, fg = colors.base4 })
+  set('TelescopeMatching', { fg = colors.base7, bg = 'NONE', bold = true })
+  set('TelescopePreviewMatch', { fg = colors.deep_yellow, bg = 'NONE', bold = true })
+  set('TelescopePromptTitle', { fg = colors.base7, bg = 'NONE', bold = true })
+  set('TelescopeResultsTitle', { link = 'TelescopePromptTitle' })
+  set('TelescopePreviewTitle', { link = 'TelescopePromptTitle' })
+
   -- neotree
-  set('NeoTreeNormal', { bg = colors.base1 })
-  set('NeoTreeNormalNC', { bg = colors.base1 })
-  set('NeoTreeEndOfBuffer', { fg = colors.base1, bg = colors.base1 })
-  set('NeoTreeDirectoryName', { fg = colors.base7, bold = true })
-  set('NeoTreeWinSeparator', { fg = colors.base1, bg = colors.base1 })
+  set('NeoTreeNormal', { bg = colors.surface })
+  set('NeoTreeNormalNC', { bg = colors.surface })
+  set('NeoTreeEndOfBuffer', { fg = colors.surface, bg = colors.surface })
+  set('NeoTreeDirectoryName', { fg = colors.base7 })
+  set('NeoTreeDirectoryIcon', { fg = colors.base5 })
+  set('NeoTreeWinSeparator', { fg = colors.border, bg = colors.surface })
   set('NeoTreeFileName', { fg = colors.base7 })
   set('NeoTreeFileNameOpened', { fg = '#f9e2af', italic = true })
-  set('NeoTreeCursorLine', { bg = colors.deep_blue0 })
+  set('NeoTreeCursorLine', { bg = '#404242' })
   set('NeoTreeGitModified', { fg = colors.modified })
   set('NeoTreeGitUntracked', { fg = colors.modified })
-  set('NeoTreeIndentMarker', { fg = colors.base3 })
+  set('NeoTreeIndentMarker', { fg = colors.base4 })
 
   -- StatusLine highlights
   set('StatusLineNormal', { fg = colors.base0, bg = colors.green, bold = true })
