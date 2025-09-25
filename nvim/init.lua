@@ -410,7 +410,12 @@ vim.keymap.set('n', '<leader>ao', function()
   vim.cmd 'wincmd L'
 end, { desc = '[a]ider [o]pen Gemini in rightmost split' })
 vim.api.nvim_set_keymap('n', '<leader>am', ':AiderAddModifiedFiles<CR>', { noremap = true, silent = true, desc = '[a]ider add [m]odified files' })
-vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { noremap = true })
+vim.api.nvim_create_autocmd('TermOpen', {
+  pattern = { 'term://*aider*', 'term://*AiderConsole*' },
+  callback = function(ev)
+    vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { buffer = ev.buf, noremap = true, silent = true, nowait = true })
+  end,
+})
 
 -- [[ Basic Keymaps ]]
 
