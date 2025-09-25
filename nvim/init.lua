@@ -403,7 +403,12 @@ vim.o.hidden = false
 vim.opt.fillchars:append { eob = ' ', vert = '▕' }
 
 -- aider stuff
-vim.api.nvim_set_keymap('n', '<leader>ao', ':AiderOpen --model gemini<CR>', { noremap = true, silent = true, desc = '[a]ider [o]pen with gemini' })
+vim.keymap.set('n', '<leader>ao', function()
+  -- open aider in a vsplit with gemini model
+  vim.cmd 'AiderOpen --model gemini'
+  -- move the new split all the way to the right
+  vim.cmd 'wincmd L'
+end, { desc = '[a]ider [o]pen Gemini in rightmost split' })
 vim.api.nvim_set_keymap('n', '<leader>am', ':AiderAddModifiedFiles<CR>', { noremap = true, silent = true, desc = '[a]ider add [m]odified files' })
 vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { noremap = true })
 
