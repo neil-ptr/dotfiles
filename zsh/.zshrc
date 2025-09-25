@@ -151,6 +151,7 @@ export AIDER_DARK_MODE=true
 export AIDER_EDITOR=vim
 export AIDER_COMMIT=false
 export AIDER_AUTO_STAGE=false
+export AIDER_CODE_THEME='github-dark'
 
 [[ "$TERM_PROGRAM" == "CodeEditApp_Terminal" ]] && \
   source "/Applications/CodeEdit.app/Contents/Resources/codeedit_shell_integration.zsh"
