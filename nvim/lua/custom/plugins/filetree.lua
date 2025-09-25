@@ -77,6 +77,29 @@ return {
           end,
         },
       },
+      event_handlers = {
+        {
+          event = 'file_opened',
+          handler = function(_)
+            local prev = vim.fn.bufnr '#'
+            local curr = vim.api.nvim_get_current_buf()
+            if prev <= 0 or prev == curr then
+              return
+            end
+            if vim.bo[prev].modified then
+              return
+            end
+            for _, win in ipairs(vim.api.nvim_list_wins()) do
+              if vim.api.nvim_win_get_buf(win) == prev then
+                return -- still visible somewhere; don't delete
+              end
+            end
+            vim.api.nvim_buf_delete(prev, { force = false })
+            -- If you also want to close the tree after opening, uncomment:
+            -- require("neo-tree.command").execute({ action = "close" })
+          end,
+        },
+      },
     }
   end,
 }
