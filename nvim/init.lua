@@ -115,11 +115,7 @@ require('lazy').setup({
       }
     end,
   },
-  { 'catppuccin/nvim', name = 'catppuccin', priority = 1000 },
   { 'luochen1990/rainbow' },
-  {
-    'mfussenegger/nvim-dap',
-  },
   {
     -- Autocompletion
     'hrsh7th/nvim-cmp',
