@@ -11,7 +11,7 @@ local theme = {
   insert = { a = { fg = colors.base6, bg = colors.deep_purple } },
   visual = { a = { fg = colors.base6, bg = colors.deep_teal } },
   replace = { a = { fg = colors.base6, bg = colors.deep_red } },
-  terminal = { a = { fg = colors.base6, bg = colors.deep_blue1 } },
+  terminal = { a = { fg = colors.base6, bg = '#32D74B' } },
 
   inactive = {
     a = { fg = colors.base5, bg = colors.black },
