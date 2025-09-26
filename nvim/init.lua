@@ -137,6 +137,7 @@ require('lazy').setup({
       -- your configuration comes here
       -- if you don't want to use the default settings
       auto_manage_context = true, -- automatically manage buffer context
+      default_bindings = false,
       debug = false, -- enable debug logging
     },
   },
@@ -217,6 +218,15 @@ require('lazy').setup({
     },
   },
   { 'EdenEast/nightfox.nvim' },
+  -- {
+  --   dir = vim.fn.stdpath 'config' .. '/lua/custom/plugins/cursordark',
+  --   name = 'cursordark',
+  --   lazy = false,
+  --   priority = 1000,
+  --   config = function()
+  --     require('custom.plugins.cursordark.colors').init()
+  --   end,
+  -- },
   {
     dir = vim.fn.stdpath 'config' .. '/lua/custom/plugins/xcodedark',
     name = 'xcodedark',
