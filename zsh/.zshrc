@@ -149,9 +149,10 @@ source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 export GEMINI_API_KEY="$(security find-generic-password -a "$USER" -s gemini_api_key -w 2>/dev/null || true)"
 export AIDER_DARK_MODE=true
 export AIDER_EDITOR=vim
-export AIDER_COMMIT=false
+export AIDER_AUTO_COMMITS=false
 export AIDER_AUTO_STAGE=false
 export AIDER_CODE_THEME='github-dark'
+export AIDER_ATTRIBUTE_CO_AUTHORED_BY=false
 
 [[ "$TERM_PROGRAM" == "CodeEditApp_Terminal" ]] && \
   source "/Applications/CodeEdit.app/Contents/Resources/codeedit_shell_integration.zsh"
