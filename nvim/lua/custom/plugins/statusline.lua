@@ -1,11 +1,30 @@
--- Eviline config for lualine
--- Author: shadmansaleh
--- Credit: glepnir
+local xcodedark = require 'custom.plugins.xcodedark.colors'
+local colors = xcodedark.colors
+
+local theme = {
+  normal = {
+    a = { fg = colors.base6, bg = colors.base3 },
+    b = { fg = colors.base6, bg = colors.surface1 },
+    c = { fg = colors.base6, bg = colors.surface1 },
+  },
+
+  insert = { a = { fg = colors.base6, bg = colors.deep_purple } },
+  visual = { a = { fg = colors.base6, bg = colors.deep_teal } },
+  replace = { a = { fg = colors.base6, bg = colors.deep_red } },
+  terminal = { a = { fg = colors.base6, bg = '#32D74B' } },
+
+  inactive = {
+    a = { fg = colors.base5, bg = colors.black },
+    b = { fg = colors.white, bg = colors.black },
+    c = { fg = colors.white },
+  },
+}
 
 return {
   'nvim-lualine/lualine.nvim',
   opts = {
     options = {
+      theme = theme,
       component_separators = '',
       section_separators = { left = '', right = '' },
     },

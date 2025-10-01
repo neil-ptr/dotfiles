@@ -115,6 +115,7 @@ require('lazy').setup({
       }
     end,
   },
+  { 'luochen1990/rainbow' },
   {
     -- Autocompletion
     'hrsh7th/nvim-cmp',
@@ -130,7 +131,16 @@ require('lazy').setup({
       'rafamadriz/friendly-snippets',
     },
   },
-
+  {
+    'joshuavial/aider.nvim',
+    opts = {
+      -- your configuration comes here
+      -- if you don't want to use the default settings
+      auto_manage_context = true, -- automatically manage buffer context
+      default_bindings = false,
+      debug = false, -- enable debug logging
+    },
+  },
   { 'nvim-ts-autotag', opts = {} },
 
   -- Useful plugin to show you pending keybinds.
@@ -208,6 +218,25 @@ require('lazy').setup({
     },
   },
   { 'EdenEast/nightfox.nvim' },
+  -- {
+  --   dir = vim.fn.stdpath 'config' .. '/lua/custom/plugins/cursordark',
+  --   name = 'cursordark',
+  --   lazy = false,
+  --   priority = 1000,
+  --   config = function()
+  --     require('custom.plugins.cursordark.colors').init()
+  --   end,
+  -- },
+  {
+    dir = vim.fn.stdpath 'config' .. '/lua/custom/plugins/xcodedark',
+    name = 'xcodedark',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require('custom.plugins.xcodedark.colors').init()
+    end,
+  },
+  { 'arzg/vim-colors-xcode' },
   {
     -- Add indentation guides even on blank lines
     'lukas-reineke/indent-blankline.nvim',
@@ -372,7 +401,8 @@ vim.o.termguicolors = true
 vim.o.hidden = false
 
 -- vim.o.background = "dark" -- set this to dark or light
-vim.cmd 'colorscheme nightfox'
+-- vim.cmd 'colorscheme xcodedarkhc'
+-- vim.cmd 'colorscheme nightfox'
 -- vim.cmd 'colorscheme kanagawa'
 
 -- neotree colors
@@ -380,7 +410,22 @@ vim.cmd 'colorscheme nightfox'
 -- vim.cmd 'hi NeoTreeNormalNC guibg=#1f1d2e'
 
 -- tilde empty line removal
-vim.opt.fillchars = { eob = ' ' }
+vim.opt.fillchars:append { eob = ' ', vert = '▕' }
+
+-- aider stuff
+vim.keymap.set('n', '<leader>ao', function()
+  -- open aider in a vsplit with gemini model
+  vim.cmd 'AiderOpen --model gemini'
+  -- move the new split all the way to the right
+  vim.cmd 'wincmd L'
+end, { desc = '[a]ider [o]pen Gemini in rightmost split' })
+vim.api.nvim_set_keymap('n', '<leader>am', ':AiderAddModifiedFiles<CR>', { noremap = true, silent = true, desc = '[a]ider add [m]odified files' })
+vim.api.nvim_create_autocmd('TermOpen', {
+  pattern = { 'term://*aider*', 'term://*AiderConsole*' },
+  callback = function(ev)
+    vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { buffer = ev.buf, noremap = true, silent = true, nowait = true })
+  end,
+})
 
 -- [[ Basic Keymaps ]]
 
@@ -426,11 +471,12 @@ vim.api.nvim_set_keymap('n', '<Leader>t', ':Neotree toggle<CR>', { noremap = tru
 
 -- buffer control binds
 vim.api.nvim_set_keymap('n', '<leader>bd', ':bd<CR>', { noremap = true, silent = true, desc = '[b]uffer [d]elete' })
+vim.api.nvim_set_keymap('n', '<leader>bl', ':ls<CR>', { noremap = true, silent = true, desc = '[b]uffer [l]ist' })
 
 -- harpoon config
 local mark = require 'harpoon.mark'
 local ui = require 'harpoon.ui'
-vim.keymap.set('n', '<leader>a', mark.add_file, { desc = '[a]dd file to marks' })
+vim.keymap.set('n', '<leader>A', mark.add_file, { desc = '[a]dd file to marks' })
 vim.keymap.set('n', '<leader>e', ui.toggle_quick_menu, { desc = 'Toggle harpoon' })
 vim.keymap.set('n', '<C-m>', function()
   ui.nav_file(1)
@@ -720,10 +766,10 @@ local border = {
 }
 
 -- LSP settings (for overriding per client)
-local handlers = {
-  ['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = border }),
-  ['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
-}
+-- local handlers = {
+--   ['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = border }),
+--   ['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
+-- }
 
 -- Do not forget to use the on_attach function
 
@@ -793,6 +839,7 @@ mason_lspconfig.setup_handlers {
 
 require('conform').setup {
   formatters_by_ft = {
+    astro = { 'prettierd', 'eslint_d' },
     lua = { 'stylua' },
     python = { 'black', 'isort' },
     json = { 'fixjson' },
