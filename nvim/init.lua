@@ -132,13 +132,90 @@ require('lazy').setup({
     },
   },
   {
-    'joshuavial/aider.nvim',
+    'yetone/avante.nvim',
+    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+    -- ⚠️ must add this setting! ! !
+    build = vim.fn.has 'win32' ~= 0 and 'powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false' or 'make',
+    event = 'VeryLazy',
+    version = nil, -- Never set this value to "*"! Never!
+    ---@module 'avante'
+    ---@type avante.Config
     opts = {
-      -- your configuration comes here
-      -- if you don't want to use the default settings
-      auto_manage_context = true, -- automatically manage buffer context
-      default_bindings = false,
-      debug = false, -- enable debug logging
+      -- add any opts here
+      -- this file can contain specific instructions for your project
+      instructions_file = 'avante.md',
+      -- for example
+      provider = 'gemini',
+      providers = {
+        claude = {
+          endpoint = 'https://api.anthropic.com',
+          model = 'claude-sonnet-4-20250514',
+          timeout = 30000, -- Timeout in milliseconds
+          extra_request_body = {
+            temperature = 0.75,
+            max_tokens = 20480,
+          },
+        },
+        moonshot = {
+          endpoint = 'https://api.moonshot.ai/v1',
+          model = 'kimi-k2-0711-preview',
+          timeout = 30000, -- Timeout in milliseconds
+          extra_request_body = {
+            temperature = 0.75,
+            max_tokens = 32768,
+          },
+        },
+        gemini = {
+          model = 'gemini-2.5-flash', -- or "gemini-2.5-flash" if you prefer faster/smaller model
+          timeout = 30000,
+          extra_request_body = {
+            temperature = 0.7,
+            max_tokens = 32768,
+          },
+        },
+      },
+    },
+    config = function(_, opts)
+      require('avante').setup(opts)
+      vim.api.nvim_set_hl(0, 'AvantePromptInputBorder', { fg = '#ff0000', bold = true, bg = '#ff0000' })
+    end,
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'MunifTanjim/nui.nvim',
+      --- The below dependencies are optional,
+      'nvim-mini/mini.pick', -- for file_selector provider mini.pick
+      'nvim-telescope/telescope.nvim', -- for file_selector provider telescope
+      'hrsh7th/nvim-cmp', -- autocompletion for avante commands and mentions
+      'ibhagwan/fzf-lua', -- for file_selector provider fzf
+      'stevearc/dressing.nvim', -- for input provider dressing
+      'folke/snacks.nvim', -- for input provider snacks
+      'nvim-tree/nvim-web-devicons', -- or echasnovski/mini.icons
+      'zbirenbaum/copilot.lua', -- for providers='copilot'
+      {
+        -- support for image pasting
+        'HakonHarnes/img-clip.nvim',
+        event = 'VeryLazy',
+        opts = {
+          -- recommended settings
+          default = {
+            embed_image_as_base64 = false,
+            prompt_for_file_name = false,
+            drag_and_drop = {
+              insert_mode = true,
+            },
+            -- required for Windows users
+            use_absolute_path = true,
+          },
+        },
+      },
+      {
+        -- Make sure to set this up properly if you have lazy=true
+        'MeanderingProgrammer/render-markdown.nvim',
+        opts = {
+          file_types = { 'markdown', 'Avante' },
+        },
+        ft = { 'markdown', 'Avante' },
+      },
     },
   },
   { 'nvim-ts-autotag', opts = {} },
@@ -413,19 +490,7 @@ vim.o.hidden = false
 vim.opt.fillchars:append { eob = ' ', vert = '▕' }
 
 -- aider stuff
-vim.keymap.set('n', '<leader>ao', function()
-  -- open aider in a vsplit with gemini model
-  vim.cmd 'AiderOpen --model gemini'
-  -- move the new split all the way to the right
-  vim.cmd 'wincmd L'
-end, { desc = '[a]ider [o]pen Gemini in rightmost split' })
-vim.api.nvim_set_keymap('n', '<leader>am', ':AiderAddModifiedFiles<CR>', { noremap = true, silent = true, desc = '[a]ider add [m]odified files' })
-vim.api.nvim_create_autocmd('TermOpen', {
-  pattern = { 'term://*aider*', 'term://*AiderConsole*' },
-  callback = function(ev)
-    vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { buffer = ev.buf, noremap = true, silent = true, nowait = true })
-  end,
-})
+vim.api.nvim_set_keymap('n', '<leader>ao', '<cmd>Avante<CR>', { noremap = true, silent = true, desc = '[a]vante [o]pen' })
 
 -- [[ Basic Keymaps ]]
 
@@ -709,9 +774,15 @@ local on_attach = function(_, bufnr)
   nmap('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
   nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
   nmap('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
-  nmap('gM', function()
-    vim.cmd('vert Man ' .. vim.fn.expand '<cword>')
-  end, '[G]oto [M]an page')
+  vim.keymap.set('n', 'gM', function()
+    local word = vim.fn.expand '<cword>'
+    if word == '' then
+      vim.notify('No word under cursor', vim.log.levels.WARN)
+      return
+    end
+    vim.cmd('vertical Man ' .. vim.fn.shellescape(word))
+  end, { desc = 'Goto Man page', silent = true })
+
   nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
   nmap('<leader>ss', require('telescope.builtin').lsp_document_symbols, 'Document [S]ymbol[s]')
   nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
@@ -828,8 +899,20 @@ mason_lspconfig.setup {
 
 mason_lspconfig.setup_handlers {
   function(server_name)
-    require('lspconfig')[server_name].setup {
+    local lspconfig = require 'lspconfig'
+
+    lspconfig[server_name].setup {
       capabilities = capabilities,
+      on_attach = on_attach,
+      settings = servers[server_name],
+      filetypes = (servers[server_name] or {}).filetypes,
+    }
+
+    -- only for the tcp/ip stack project
+    lspconfig.clangd.setup {
+      cmd = { 'docker', 'exec', '-i', 'tcpdev', 'clangd', '--background-index' },
+      root_dir = lspconfig.util.root_pattern('compile_commands.json', '.git', '.'),
+      capabilities = require('cmp_nvim_lsp').default_capabilities(),
       on_attach = on_attach,
       settings = servers[server_name],
       filetypes = (servers[server_name] or {}).filetypes,
