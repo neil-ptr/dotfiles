@@ -5,7 +5,7 @@ return {
       or "make",
     event = "VeryLazy",
     opts = {
-      provider = "copilot",
+      provider = "gemini",
       selection = {
         hint_display = "none",
       },
