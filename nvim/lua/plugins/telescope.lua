@@ -17,7 +17,7 @@ return {
 
     -- find files in project root
     {
-      "<leader>sf",
+      "<leader>sp",
       function()
         require("telescope.builtin").find_files({
           cwd = LazyVim.root(),
@@ -28,7 +28,7 @@ return {
 
     -- find files in current working directory
     {
-      "<leader>sF",
+      "<leader>sP",
       function()
         require("telescope.builtin").find_files({
           cwd = vim.uv.cwd(),
@@ -39,9 +39,20 @@ return {
 
     -- live grep
     {
-      "<leader>sg",
+      "<leader>sf",
       function()
         require("telescope.builtin").live_grep({
+          cwd = LazyVim.root(),
+        })
+      end,
+      desc = "Grep (Root Dir)",
+    },
+
+    -- search wordk
+    {
+      "<leader>sw",
+      function()
+        require("telescope.builtin").grep_string({
           cwd = LazyVim.root(),
         })
       end,
@@ -64,17 +75,6 @@ return {
         require("telescope.builtin").oldfiles()
       end,
       desc = "Recent Files",
-    },
-
-    -- plugin files (your original one)
-    {
-      "<leader>sp",
-      function()
-        require("telescope.builtin").find_files({
-          cwd = require("lazy.core.config").options.root,
-        })
-      end,
-      desc = "Find Plugin File",
     },
   },
 }
