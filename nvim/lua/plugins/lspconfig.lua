@@ -5,6 +5,7 @@ return {
       servers = {
         ["*"] = {
           keys = {
+            { "gS", "<cmd>ClangdSwitchSourceHeader<CR>", "Goto source or header" },
             { "gd", require("telescope.builtin").lsp_definitions, "Goto definition" },
             { "gr", require("telescope.builtin").lsp_definitions, "Goto references" },
             { "gI", require("telescope.builtin").lsp_definitions, "Goto implementation" },
