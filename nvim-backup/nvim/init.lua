@@ -146,6 +146,7 @@ require('lazy').setup({
       instructions_file = 'avante.md',
       -- for example
       provider = 'gemini',
+      auto_set_highlight_group = false,
       providers = {
         claude = {
           endpoint = 'https://api.anthropic.com',
@@ -175,10 +176,6 @@ require('lazy').setup({
         },
       },
     },
-    config = function(_, opts)
-      require('avante').setup(opts)
-      vim.api.nvim_set_hl(0, 'AvantePromptInputBorder', { fg = '#ff0000', bold = true, bg = '#ff0000' })
-    end,
     dependencies = {
       'nvim-lua/plenary.nvim',
       'MunifTanjim/nui.nvim',
@@ -489,8 +486,9 @@ vim.o.hidden = false
 -- tilde empty line removal
 vim.opt.fillchars:append { eob = ' ', vert = '▕' }
 
--- aider stuff
-vim.api.nvim_set_keymap('n', '<leader>ao', '<cmd>Avante<CR>', { noremap = true, silent = true, desc = '[a]vante [o]pen' })
+-- avante binds
+vim.api.nvim_set_keymap('n', '<leader>at', '<cmd>AvanteToggle<CR>', { noremap = true, silent = true, desc = '[a]vante [t]oggle' })
+vim.opt.sessionoptions:remove { 'blank' } -- removes empty avanate buffers
 
 -- [[ Basic Keymaps ]]
 
