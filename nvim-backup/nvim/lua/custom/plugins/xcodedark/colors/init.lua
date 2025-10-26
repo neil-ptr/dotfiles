@@ -476,6 +476,13 @@ function M.init()
   set('Delimiter', { fg = '#ffffff', bg = 'NONE' })
   set('Operator', { fg = '#ffffff', bg = 'NONE' })
 
+  -- avante
+  set('AvanteSidebarNormal', { bg = colors.surface })
+  set('AvanteSidebarWinSeparator', { bg = colors.surface, fg = colors.surface })
+  set('AvanteSidebarWinHorizontalSeparator', { link = 'AvanteSidebarNormal' })
+  set('AvanteReversedNormal', { link = 'AvanteSidebarNormal' })
+  set('AvantePromptInput', { link = 'AvanteSidebarNormal' })
+
   -- telescope
   set('TelescopeNormal', { bg = colors.base1, fg = '#8D8E8D' })
   set('TelescopePromptNormal', { bg = colors.base1, fg = '#ffffff' })
