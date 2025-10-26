@@ -4,12 +4,13 @@ local config = wezterm.config_builder()
 
 config.enable_tab_bar = false
 
-config.color_scheme = "Apple System Colors"
+config.color_scheme = "Catppuccin Mocha"
 
-config.colors = {
-	foreground = "#dfdfe0",
-	background = "#292a30",
-}
+-- config.color_scheme = "Apple System Colors"
+-- config.colors = {
+-- 	foreground = "#dfdfe0",
+-- 	background = "#292a30",
+-- }
 
 config.font = wezterm.font("Monaspace Neon", { weight = "Medium" })
 
