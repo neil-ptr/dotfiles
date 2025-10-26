@@ -1,7 +1,8 @@
 # Dotfiles
 My development setup with all my tools
+<img width="1512" height="982" alt="Screenshot 2025-10-25 at 10 30 04 PM" src="https://github.com/user-attachments/assets/faf6b51d-f58d-4aa6-a529-4e9f4d29c34d" />
 
-![Screenshot 2024-11-08 at 9 14 20 AM](https://github.com/user-attachments/assets/d196f0e5-0030-4610-8fe8-475bd1dfd20f)
+
 
 
 ## Prereqs
