@@ -3,6 +3,12 @@ return {
   "nvim-telescope/telescope.nvim",
   opts = {
     defaults = {
+      layout_config = {
+        horizontal = {
+          prompt_position = "top",
+        },
+      },
+      sorting_strategy = "ascending",
       mappings = {
         i = {
           ["<c-d>"] = actions.delete_buffer,
