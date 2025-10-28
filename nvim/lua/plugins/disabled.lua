@@ -9,8 +9,10 @@ return {
     keys = {
       { "<leader>fe", false },
       { "<leader>fE", false },
-      { "<leader>E", false },
       { "<leader>e", false },
+      { "<leader>E", false },
     },
   },
+
+  { "akinsho/bufferline.nvim", enabled = false },
 }
