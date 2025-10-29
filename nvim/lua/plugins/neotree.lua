@@ -6,16 +6,16 @@ return {
       {
         "<leader>t",
         function()
-          require("neo-tree.command").execute({ toggle = true, dir = LazyVim.root() })
+          require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() })
         end,
-        desc = "Explorer NeoTree (Root Dir)",
+        desc = "Explorer NeoTree (cwd)",
       },
       {
         "<leader>T",
         function()
-          require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() })
+          require("neo-tree.command").execute({ toggle = true, dir = LazyVim.root() })
         end,
-        desc = "Explorer NeoTree (cwd)",
+        desc = "Explorer NeoTree (Root Dir)",
       },
       {
         "<leader>ge",
@@ -43,6 +43,7 @@ return {
           if package.loaded["neo-tree"] then
             return
           else
+            ---@diagnostic disable-next-line: param-type-mismatch
             local stats = vim.uv.fs_stat(vim.fn.argv(0))
             if stats and stats.type == "directory" then
               require("neo-tree")
@@ -55,9 +56,13 @@ return {
       sources = { "filesystem", "buffers", "git_status" },
       open_files_do_not_replace_types = { "terminal", "Trouble", "trouble", "qf", "Outline" },
       filesystem = {
-        bind_to_cwd = false,
+        bind_to_cwd = true,
         follow_current_file = { enabled = true },
         use_libuv_file_watcher = true,
+        filtered_items = {
+          visible = true,
+          hide_dotfiles = false,
+        },
       },
       window = {
         mappings = {
