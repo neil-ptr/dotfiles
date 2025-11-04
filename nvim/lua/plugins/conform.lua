@@ -44,9 +44,22 @@ return {
           lsp_format = "fallback", -- not recommended to change
         },
         formatters_by_ft = {
-          lua = { "stylua" },
-          fish = { "fish_indent" },
           sh = { "shfmt" },
+          astro = { "prettierd", "eslint_d" },
+          lua = { "stylua" },
+          python = { "black", "isort" },
+          json = { "fixjson" },
+          rust = { "rustfmt" },
+          javascript = { "prettierd", "eslint_d" },
+          typescript = { "prettierd", "eslint_d" },
+          jsx = { "prettierd", "eslint_d" },
+          typescriptreact = { "prettierd", "eslint_d" },
+          go = { "gofmt", "goimports", "golines" },
+          c = { "clang_format" },
+          cpp = { "clang_format" },
+          objcpp = { "clang_format" },
+          objc = { "clang_format" },
+          html = { "html_beautify" },
         },
         -- The options you set here will be merged with the builtin formatters.
         -- You can also define any custom formatters here.
