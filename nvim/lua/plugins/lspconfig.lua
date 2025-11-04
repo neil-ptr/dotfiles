@@ -56,7 +56,6 @@ return {
               "<leader>vd",
               function()
                 vim.cmd("vs") -- Perform vertical split
-                vim.cmd("wincmd l") -- Move to the right pane
                 require("telescope.builtin").lsp_definitions() -- Trigger go-to definition
               end,
             },
@@ -64,7 +63,6 @@ return {
               "<leader>vr",
               function()
                 vim.cmd("vs") -- Perform vertical split
-                vim.cmd("wincmd l") -- Move to the right pane
                 require("telescope.builtin").lsp_references() -- Trigger go-to references
               end,
             },
