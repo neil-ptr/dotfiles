@@ -156,3 +156,6 @@ export AIDER_ATTRIBUTE_CO_AUTHORED_BY=false
 
 [[ "$TERM_PROGRAM" == "CodeEditApp_Terminal" ]] && \
   source "/Applications/CodeEdit.app/Contents/Resources/codeedit_shell_integration.zsh"
+
+# bun completions
+[ -s "/Users/neilviloria/.bun/_bun" ] && source "/Users/neilviloria/.bun/_bun"
