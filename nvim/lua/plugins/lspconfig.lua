@@ -1,7 +1,7 @@
 local servers = {
   gopls = {},
   pyright = {},
-  ts_ls = {},
+  tsgo = {},
   jsonls = {},
   cssls = {},
   eslint = {},
