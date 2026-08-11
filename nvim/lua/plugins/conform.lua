@@ -50,10 +50,11 @@ return {
           python = { "black", "isort" },
           json = { "fixjson" },
           rust = { "rustfmt" },
-          javascript = { "prettierd", "eslint_d" },
-          typescript = { "prettierd", "eslint_d" },
-          jsx = { "prettierd", "eslint_d" },
-          typescriptreact = { "prettierd", "eslint_d" },
+          javascript = { "oxlint", "prettierd", "eslint_d" },
+          typescript = { "oxlint", "prettierd", "eslint_d" },
+          jsx = { "oxlint", "prettierd", "eslint_d" },
+          javascriptreact = { "oxlint", "prettierd", "eslint_d" },
+          typescriptreact = { "oxlint", "prettierd", "eslint_d" },
           go = { "gofmt", "goimports", "golines" },
           c = { "clang_format" },
           cpp = { "clang_format" },
@@ -66,6 +67,16 @@ return {
         ---@type table<string, conform.FormatterConfigOverride|fun(bufnr: integer): nil|conform.FormatterConfigOverride>
         formatters = {
           injected = { options = { ignore_errors = true } },
+          -- Not in the pinned conform.nvim yet, so define it here.
+          oxlint = {
+            command = require("conform.util").from_node_modules("oxlint"),
+            args = { "--fix", "$FILENAME" },
+            exit_codes = { 0, 1 },
+            stdin = false,
+            condition = function(_, ctx)
+              return vim.fs.find({ ".oxlintrc.json", "oxlint.json" }, { path = ctx.filename, upward = true })[1] ~= nil
+            end,
+          },
           -- # Example of using dprint only when a dprint.json file is present
           -- dprint = {
           --   condition = function(ctx)

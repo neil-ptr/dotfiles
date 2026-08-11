@@ -8,6 +8,7 @@ local servers = {
   tailwindcss = {},
   astro = { filetypes = { "astro" } },
   clangd = {},
+  wgsl_analyzer = {},
   html = { filetypes = { "html" } },
   lua_ls = {
     Lua = {
